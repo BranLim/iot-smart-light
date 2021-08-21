@@ -22,11 +22,11 @@ const String lightConfigApi = "/smartlights/api/v1/lights/status";
 WiFiClient client;
 int wifiStatus = WL_IDLE_STATUS;
 
-#define Debug 0
+#define Debug 1
 
 void setup() {
 
-#ifdef Debug
+#if Debug
   Serial.begin(9600);
 
   while (!Serial);
@@ -38,7 +38,7 @@ void setup() {
 
   while (wifiStatus != WL_CONNECTED) {
 
-#ifdef Debug
+#if Debug
     Serial.print("Attempting to connect to SSID: ");
     Serial.println(ssid_name);
 #endif
@@ -46,21 +46,21 @@ void setup() {
     delay(10000);
   }
 
-#ifdef Debug
+#if Debug
   Serial.println("WiFi connected");
   Serial.print("Connecting to: ");
   Serial.println( server);
 #endif
 
   if (!client.connect(server, 3000)) {
-#ifndef Debug
+#if Debug
     Serial.println("Fail to connect to server!");
 #endif
     return;
 
   }
 
-#ifdef Debug
+#if Debug
   Serial.println("Checking server is up!");
 #endif
 
@@ -75,17 +75,17 @@ void loop() {
 
   fetchLightConfiguration();
   if (!client.connected()) {
-#ifdef Debug
+#if Debug
     Serial.println("Client disconnected");
 #endif
     client.stop();
   }
-  delay(5000);
+  delay(2000);
 }
 
 void pingServer() {
 
-#ifdef Debug
+#if Debug
   Serial.println("Connecting to server at " + api);
 #endif
 
@@ -93,7 +93,7 @@ void pingServer() {
   client.println("Connection: close");
   client.println();
 
-#ifdef Debug
+#if Debug
   Serial.println("API called.");
   Serial.println(client);
 #endif
@@ -103,7 +103,7 @@ void pingServer() {
   while (client.connected()) {
     if (client.available()) {
       String c = client.readStringUntil('\0');
-#ifndef Debug
+#if Debug
       Serial.print(c);
       Serial.println();
 #endif
@@ -116,7 +116,7 @@ void pingServer() {
 void fetchLightConfiguration() {
 
   if (client.connect(server, 3000)) {
-#ifdef Debug
+#if Debug
     Serial.println("Connected to server at " + lightConfigApi);
 #endif
 
@@ -124,7 +124,7 @@ void fetchLightConfiguration() {
     client.println("Connection: close");
     client.println();
 
-#ifdef Debug
+#if Debug
     Serial.println("Called " + lightConfigApi);
 #endif
     delay(10);
@@ -146,7 +146,7 @@ void fetchLightConfiguration() {
 
 void processJsonResponse(String response) {
 
-#ifdef Debug
+#if Debug
   Serial.println("Processing server response: ");
   Serial.println(response);
 #endif
@@ -160,7 +160,7 @@ void processJsonResponse(String response) {
     return;
   }
 
-#ifdef Debug
+#if Debug
   Serial.println("Deserialise success...");
 #endif
 
