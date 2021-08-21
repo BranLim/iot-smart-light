@@ -16,8 +16,8 @@ const char *server = "*";
 const char *ssid_name = "*";
 const char *ssid_pass = "*";
 
-const String api = "/api/v1/index";
-const String lightConfigApi = "/api/v1/lights/config";
+const String api = "/smartlights/api/v1/index";
+const String lightConfigApi = "/smartlights/api/v1/lights/status";
 
 WiFiClient client;
 int wifiStatus = WL_IDLE_STATUS;
